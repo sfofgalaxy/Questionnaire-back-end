@@ -52,9 +52,9 @@ public class UserController {
                 message.setMessage("用户名或密码错误");
             }else{
                 String token = encrypteUtils.getMD5Code(username,password);
-                redisUtils.set(username,token,86400);
+                redisUtils.set(token,username,86400);
                 message.setState(true);
-                message.setMessage("登录成功");
+                message.setMessage(token);
             }
         }
         return message;
@@ -86,9 +86,9 @@ public class UserController {
                 user.setUsername(username);
                 if(userService.insertUser(user)>0){
                     String token = encrypteUtils.getMD5Code(username,password);
-                    redisUtils.set(username,token,86400);
+                    redisUtils.set(token,username,86400);
                     message.setState(true);
-                    message.setMessage("注册成功");
+                    message.setMessage(token);
                 }else{
                     message.setState(false);
                     message.setMessage("邮箱已存在");
@@ -103,6 +103,7 @@ public class UserController {
     public GeneralMessage modifypwd(@RequestParam("token") String token,
                                     @RequestParam("password") String password){
         GeneralMessage message = new GeneralMessage();
+
         return message;
     }
 }
