@@ -1,58 +1,54 @@
 package com.ziffer.questionnaire.utils;
 
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.concurrent.TimeUnit;
-
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 /*
 * @author 帆
 * */
 @Component
 public class RedisUtils {
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    @Value("${spring.redis.host}")
+    private String redisHost;
 
-    // Key（键），简单的key-value操作
+    @Value("${spring.redis.port}")
+    private int redisPort;
 
-    /**
-     * 实现命令：TTL key，以秒为单位，返回给定 key的剩余生存时间(TTL, time to live)。
-     *
-     * @param key
-     * @return
-     */
-    public long ttl(String key) {
-        return redisTemplate.getExpire(key);
+    @Value("${spring.redis.password}")
+    private String password;
+
+    //可用连接实例的最大数目，默认值为8；
+    //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
+    private static int MAX_ACTIVE = 100;
+
+    //控制一个pool最多有多少个状态为idle(空闲的)的jedis实例，默认值也是8。
+    private static int MAX_IDLE = 10;
+
+    //等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException；
+    private static int MAX_WAIT = 1000;
+
+    private static int EXPIRE = 1800;
+    private JedisPool getRedisPool() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(MAX_ACTIVE);
+        jedisPoolConfig.setMaxIdle(MAX_IDLE);
+        jedisPoolConfig.setMaxWaitMillis(MAX_WAIT);
+        return new JedisPool(jedisPoolConfig, redisHost,redisPort);
+        //,TIMEOUT,password
     }
-
-    /**
-     * 实现命令：expire 设置过期时间，单位秒
-     *
-     * @param key
-     * @return
-     */
-    public void expire(String key, long timeout) {
-        redisTemplate.expire(key, timeout, TimeUnit.SECONDS);
-    }
-
-    /**
-     * 实现命令：INCR key，增加key一次
-     *
-     * @param key
-     * @return
-     */
-    public long incr(String key, long delta) {
-        return redisTemplate.opsForValue().increment(key, delta);
-    }
-
     /**
      * 实现命令：DEL key，删除一个key
      *
      * @param key
      */
     public void del(String key) {
-        redisTemplate.delete(key);
+        JedisPool pool = getRedisPool();
+        Jedis jedis = pool.getResource();
+        jedis.del(key);
+        jedis.close();
+        pool.close();
     }
 
     // String（字符串）
@@ -64,7 +60,12 @@ public class RedisUtils {
      * @param value
      */
     public void set(String key, String value) {
-        redisTemplate.opsForValue().set(key, value);
+        JedisPool pool = getRedisPool();
+        Jedis jedis = pool.getResource();
+        jedis.set(key, value);
+        jedis.expire(key,EXPIRE);
+        jedis.close();
+        pool.close();
     }
 
     /**
@@ -75,8 +76,13 @@ public class RedisUtils {
      * @param timeout
      *            （以秒为单位）
      */
-    public void set(String key, String value, long timeout) {
-        redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+    public void set(String key, String value, int timeout) {
+        JedisPool pool = getRedisPool();
+        Jedis jedis = pool.getResource();
+        jedis.set(key, value);
+        jedis.expire(key,timeout);
+        jedis.close();
+        pool.close();
     }
 
     /**
@@ -86,6 +92,11 @@ public class RedisUtils {
      * @return value
      */
     public String get(String key) {
-        return (String)redisTemplate.opsForValue().get(key);
+        JedisPool pool = getRedisPool();
+        Jedis jedis = pool.getResource();
+        String value = jedis.get(key);
+        jedis.close();
+        pool.close();
+        return value;
     }
 }

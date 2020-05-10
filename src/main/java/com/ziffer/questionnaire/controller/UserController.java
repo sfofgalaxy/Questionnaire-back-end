@@ -86,7 +86,7 @@ public class UserController {
                 user.setUsername(username);
                 if(userService.insertUser(user)>0){
                     String token = encrypteUtils.getMD5Code(username,password);
-                    redisUtils.set(token,username,86400);
+                    redisUtils.set(token,username);
                     message.setState(true);
                     message.setMessage(token);
                 }else{
