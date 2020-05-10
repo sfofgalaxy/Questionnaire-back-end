@@ -2,7 +2,6 @@ package com.ziffer.questionnaire.service;
 
 import com.ziffer.questionnaire.mapper.UserMapper;
 import com.ziffer.questionnaire.model.User;
-import com.ziffer.questionnaire.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

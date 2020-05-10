@@ -52,7 +52,7 @@ public class UserController {
                 message.setMessage("用户名或密码错误");
             }else{
                 String token = encrypteUtils.getMD5Code(username,password);
-                redisUtils.set(token,username,86400);
+                redisUtils.set(token,username);
                 message.setState(true);
                 message.setMessage(token);
             }
@@ -98,7 +98,7 @@ public class UserController {
         return message;
     }
 
-    @RequestMapping("/modifypwd")
+    @RequestMapping(value = "/modifypwd",method = RequestMethod.POST)
     @AuthToken
     public GeneralMessage modifypwd(@RequestParam("token") String token,
                                     @RequestParam("password") String password){
