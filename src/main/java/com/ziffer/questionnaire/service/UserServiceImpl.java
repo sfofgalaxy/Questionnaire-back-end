@@ -11,19 +11,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Resource
     UserMapper userMapper;
-
     @Override
     public List<User> listAll() {
         return userMapper.selectAll();
-    }
-
-    @Override
-    public User selectByUsername(String username){
-        return userMapper.selectByUsername(username);
-    }
-
-    @Override
-    public int insertUser(User user) {
-        return userMapper.insert(user);
     }
 }

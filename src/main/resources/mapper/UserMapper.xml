@@ -32,8 +32,8 @@
   </delete>
 <!--  返回主键-->
   <insert id="insert" keyColumn="email" keyProperty="email" parameterType="com.ziffer.questionnaire.model.User" useGeneratedKeys="true">
-    insert into user (username, `password`)
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+    insert into user (username, `password`, email)
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="email" keyProperty="email" parameterType="com.ziffer.questionnaire.model.User" useGeneratedKeys="true">
     insert into user
