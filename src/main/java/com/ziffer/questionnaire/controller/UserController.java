@@ -1,7 +1,9 @@
 package com.ziffer.questionnaire.controller;
 
 import com.ziffer.questionnaire.dto.GeneralMessage;
+import com.ziffer.questionnaire.dto.LoginMessage;
 import com.ziffer.questionnaire.intercepter.AuthToken;
+import com.ziffer.questionnaire.mapper.UserMapper;
 import com.ziffer.questionnaire.model.User;
 import com.ziffer.questionnaire.service.UserService;
 import com.ziffer.questionnaire.utils.EncrypteUtils;
@@ -10,29 +12,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+//    @Resource
+//    //@Autowired
+//    UserService userService;
     @Resource
-    //@Autowired
-    UserService userService;
+    UserMapper userMapper;
     @Autowired
     RedisUtils redisUtils;
     @Autowired
     private EncrypteUtils encrypteUtils;
-    //等价@GetMapping("/listAll")
-    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
-    public List<User> list(){
-        return userService.listAll();
-    }
 
     //等价@PostMapping("/login")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public GeneralMessage login(@RequestParam("username") String username,
-                                @RequestParam("password") String password){
-        GeneralMessage message = new GeneralMessage();
+    public LoginMessage login(@RequestParam("username") String username,
+                              @RequestParam("password") String password){
+        LoginMessage message = new LoginMessage();
         if(username==""||password==""){
             message.setState(false);
             message.setMessage("密码或用户名不能为空");
@@ -43,7 +41,7 @@ public class UserController {
             message.setState(false);
             message.setMessage("密码至少6位");
         } else {
-            User user = userService.selectByUsername(username);
+            User user = userMapper.selectByUsername(username);
             if(user==null){
                 message.setState(false);
                 message.setMessage("用户名或密码错误");
@@ -53,6 +51,7 @@ public class UserController {
             }else{
                 String token = encrypteUtils.getMD5Code(username,password);
                 redisUtils.set(token,username);
+                message.setUsername(username);
                 message.setState(true);
                 message.setMessage(token);
             }
@@ -61,10 +60,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public GeneralMessage register(@RequestParam("username") String username,
-                                    @RequestParam("password") String password,
-                                    @RequestParam("email") String email){
-        GeneralMessage message = new GeneralMessage();
+    public LoginMessage register(@RequestParam("username") String username,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("email") String email){
+        LoginMessage message = new LoginMessage();
         if(username==""||password==""){
             message.setState(false);
             message.setMessage("密码或用户名不能为空");
@@ -75,7 +74,7 @@ public class UserController {
             message.setState(false);
             message.setMessage("密码至少6位");
         }else {
-            User userSelect = userService.selectByUsername(username);
+            User userSelect = userMapper.selectByUsername(username);
             if(userSelect!=null){
                 message.setState(false);
                 message.setMessage("用户名已存在");
@@ -84,9 +83,10 @@ public class UserController {
                 user.setEmail(email);
                 user.setPassword(password);
                 user.setUsername(username);
-                if(userService.insertUser(user)>0){
+                if(userMapper.insert(user)>0){
                     String token = encrypteUtils.getMD5Code(username,password);
                     redisUtils.set(token,username);
+                    message.setUsername(username);
                     message.setState(true);
                     message.setMessage(token);
                 }else{
@@ -100,10 +100,22 @@ public class UserController {
 
     @RequestMapping(value = "/modifypwd",method = RequestMethod.POST)
     @AuthToken
-    public GeneralMessage modifypwd(@RequestParam("token") String token,
+    public GeneralMessage modifypwd(@RequestParam("username") String username,
                                     @RequestParam("password") String password){
         GeneralMessage message = new GeneralMessage();
-
+        User user = userMapper.selectByUsername(username);
+        if(password.length()<6){
+            message.setMessage("密码长度至少6位");
+            message.setState(false);
+        } else if(user!=null&&!user.getPassword().equals(password)){
+            user.setPassword(password);
+            userMapper.updateByPrimaryKey(user);
+            message.setState(true);
+            message.setMessage("修改成功");
+        }else{
+            message.setMessage("不能和原密码相同");
+            message.setState(false);
+        }
         return message;
     }
 }
