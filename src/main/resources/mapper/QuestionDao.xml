@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziffer.questionnaire.mapper.QuestionDao">
+  <resultMap id="BaseResultMap" type="com.ziffer.questionnaire.model.Question">
+    <id column="questionID" jdbcType="INTEGER" property="questionid" />
+    <result column="paperID" jdbcType="INTEGER" property="paperid" />
+    <result column="parentID" jdbcType="INTEGER" property="parentid" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    questionID, paperID, parentID, `type`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where questionID = #{questionid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from question
+    where questionID = #{questionid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="questionID" keyProperty="questionid" parameterType="com.ziffer.questionnaire.model.Question" useGeneratedKeys="true">
+    insert into question (paperID, parentID, `type`
+      )
+    values (#{paperid,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="questionID" keyProperty="questionid" parameterType="com.ziffer.questionnaire.model.Question" useGeneratedKeys="true">
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paperid != null">
+        paperID,
+      </if>
+      <if test="parentid != null">
+        parentID,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paperid != null">
+        #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ziffer.questionnaire.model.Question">
+    update question
+    <set>
+      <if test="paperid != null">
+        paperID = #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        parentID = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where questionID = #{questionid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ziffer.questionnaire.model.Question">
+    update question
+    set paperID = #{paperid,jdbcType=INTEGER},
+      parentID = #{parentid,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=TINYINT}
+    where questionID = #{questionid,jdbcType=INTEGER}
+  </update>
+</mapper>

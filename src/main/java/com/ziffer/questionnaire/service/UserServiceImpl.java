@@ -1,6 +1,6 @@
 package com.ziffer.questionnaire.service;
 
-import com.ziffer.questionnaire.mapper.UserMapper;
+import com.ziffer.questionnaire.mapper.UserDao;
 import com.ziffer.questionnaire.model.User;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Resource
-    UserMapper userMapper;
+    UserDao userDao;
     @Override
     public List<User> listAll() {
-        return userMapper.selectAll();
+        return userDao.selectAll();
     }
 }

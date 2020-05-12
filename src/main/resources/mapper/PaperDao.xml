@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziffer.questionnaire.mapper.PaperDao">
+  <resultMap id="BaseResultMap" type="com.ziffer.questionnaire.model.Paper">
+    <id column="paperID" jdbcType="INTEGER" property="paperid" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="mode" jdbcType="TINYINT" property="mode" />
+    <result column="fillNumber" jdbcType="INTEGER" property="fillnumber" />
+    <result column="start" jdbcType="TIMESTAMP" property="start" />
+    <result column="end" jdbcType="TIMESTAMP" property="end" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    paperID, author, title, description, `mode`, fillNumber, `start`, `end`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from paper
+    where paperID = #{paperid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from paper
+    where paperID = #{paperid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="paperID" keyProperty="paperid" parameterType="com.ziffer.questionnaire.model.Paper" useGeneratedKeys="true">
+    insert into paper (author, title, description, 
+      `mode`, fillNumber, `start`, 
+      `end`)
+    values (#{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{mode,jdbcType=TINYINT}, #{fillnumber,jdbcType=INTEGER}, #{start,jdbcType=TIMESTAMP}, 
+      #{end,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="paperID" keyProperty="paperid" parameterType="com.ziffer.questionnaire.model.Paper" useGeneratedKeys="true">
+    insert into paper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="author != null">
+        author,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="mode != null">
+        `mode`,
+      </if>
+      <if test="fillnumber != null">
+        fillNumber,
+      </if>
+      <if test="start != null">
+        `start`,
+      </if>
+      <if test="end != null">
+        `end`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="mode != null">
+        #{mode,jdbcType=TINYINT},
+      </if>
+      <if test="fillnumber != null">
+        #{fillnumber,jdbcType=INTEGER},
+      </if>
+      <if test="start != null">
+        #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null">
+        #{end,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ziffer.questionnaire.model.Paper">
+    update paper
+    <set>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="mode != null">
+        `mode` = #{mode,jdbcType=TINYINT},
+      </if>
+      <if test="fillnumber != null">
+        fillNumber = #{fillnumber,jdbcType=INTEGER},
+      </if>
+      <if test="start != null">
+        `start` = #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null">
+        `end` = #{end,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where paperID = #{paperid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ziffer.questionnaire.model.Paper">
+    update paper
+    set author = #{author,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      `mode` = #{mode,jdbcType=TINYINT},
+      fillNumber = #{fillnumber,jdbcType=INTEGER},
+      `start` = #{start,jdbcType=TIMESTAMP},
+      `end` = #{end,jdbcType=TIMESTAMP}
+    where paperID = #{paperid,jdbcType=INTEGER}
+  </update>
+</mapper>

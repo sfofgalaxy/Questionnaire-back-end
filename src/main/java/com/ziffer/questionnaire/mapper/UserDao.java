@@ -4,7 +4,7 @@ import com.ziffer.questionnaire.model.User;
 
 import java.util.List;
 
-public interface UserMapper {
+public interface UserDao {
     int deleteByPrimaryKey(String email);
 
     int insert(User record);
