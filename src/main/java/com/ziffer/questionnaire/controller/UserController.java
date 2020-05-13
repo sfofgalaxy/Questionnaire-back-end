@@ -3,8 +3,8 @@ package com.ziffer.questionnaire.controller;
 import com.ziffer.questionnaire.dto.GeneralMessage;
 import com.ziffer.questionnaire.dto.LoginMessage;
 import com.ziffer.questionnaire.intercepter.AuthToken;
-import com.ziffer.questionnaire.mapper.UserDao;
 import com.ziffer.questionnaire.model.User;
+import com.ziffer.questionnaire.service.UserServiceImpl;
 import com.ziffer.questionnaire.utils.EncrypteUtils;
 import com.ziffer.questionnaire.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,9 @@ import javax.annotation.Resource;
 @RequestMapping("/user")
 public class UserController {
 //    @Resource
-//    //@Autowired
-//    UserService userService;
+//    @Autowired
     @Resource
-UserDao userDao;
+    UserServiceImpl userServiceImpl;
     @Autowired
     RedisUtils redisUtils;
     @Autowired
@@ -40,7 +39,7 @@ UserDao userDao;
             message.setState(false);
             message.setMessage("密码至少6位");
         } else {
-            User user = userDao.selectByUsername(username);
+            User user = userServiceImpl.getByUsername(username);
             if(user==null){
                 message.setState(false);
                 message.setMessage("用户名或密码错误");
@@ -73,7 +72,7 @@ UserDao userDao;
             message.setState(false);
             message.setMessage("密码至少6位");
         }else {
-            User userSelect = userDao.selectByUsername(username);
+            User userSelect = userServiceImpl.getByUsername(username);
             if(userSelect!=null){
                 message.setState(false);
                 message.setMessage("用户名已存在");
@@ -83,7 +82,7 @@ UserDao userDao;
                 user.setPassword(password);
                 user.setUsername(username);
                 //notice that 插入需要主键，自动生成的mybatis不包含主键
-                if(userDao.insert(user)>0){
+                if(userServiceImpl.register(user)>0){
                     String token = encrypteUtils.getMD5Code(username,password);
                     redisUtils.set(token,username);
                     message.setUsername(username);
@@ -103,13 +102,13 @@ UserDao userDao;
     public GeneralMessage modifypwd(@RequestParam("username") String username,
                                     @RequestParam("password") String password){
         GeneralMessage message = new GeneralMessage();
-        User user = userDao.selectByUsername(username);
+        User user = userServiceImpl.getByUsername(username);
         if(password.length()<6){
             message.setMessage("密码长度至少6位");
             message.setState(false);
         } else if(user!=null&&!user.getPassword().equals(password)){
             user.setPassword(password);
-            userDao.updateByPrimaryKey(user);
+            userServiceImpl.updatePassword(user);
             message.setState(true);
             message.setMessage("修改成功");
         }else{

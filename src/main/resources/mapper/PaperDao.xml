@@ -24,9 +24,6 @@
     where paperID = #{paperid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="paperID" keyProperty="paperid" parameterType="com.ziffer.questionnaire.model.Paper" useGeneratedKeys="true">
-<!--    <selectKey resultType="java.lang.Integer" keyProperty="paperid" order="AFTER" >-->
-<!--      SELECT LAST_INSERT_ID()-->
-<!--    </selectKey>-->
     insert into paper (author, title, description, 
       `mode`, fillNumber, `open`
       )

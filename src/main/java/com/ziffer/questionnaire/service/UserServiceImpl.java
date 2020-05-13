@@ -15,4 +15,20 @@ public class UserServiceImpl implements UserService {
     public List<User> listAll() {
         return userDao.selectAll();
     }
+
+    @Override
+    public User getByUsername(String username) {
+        return userDao.selectByUsername(username);
+    }
+
+    @Override
+    public int register(User user) {
+        return userDao.insert(user);
+    }
+
+    @Override
+    public boolean updatePassword(User user) {
+        if(userDao.updateByPrimaryKey(user)>0)return true;
+        else return false;
+    }
 }
