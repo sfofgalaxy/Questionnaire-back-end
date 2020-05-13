@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziffer.questionnaire.mapper.OptionDao">
+  <resultMap id="BaseResultMap" type="com.ziffer.questionnaire.model.Option">
+    <id column="optionID" jdbcType="INTEGER" property="optionid" />
+    <result column="questionID" jdbcType="INTEGER" property="questionid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    optionID, questionID, content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `option`
+    where optionID = #{optionid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `option`
+    where optionID = #{optionid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="optionID" keyProperty="optionid" parameterType="com.ziffer.questionnaire.model.Option" useGeneratedKeys="true">
+    insert into `option` (questionID, content)
+    values (#{questionid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="optionID" keyProperty="optionid" parameterType="com.ziffer.questionnaire.model.Option" useGeneratedKeys="true">
+    insert into `option`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionid != null">
+        #{questionid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ziffer.questionnaire.model.Option">
+    update `option`
+    <set>
+      <if test="questionid != null">
+        questionID = #{questionid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where optionID = #{optionid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ziffer.questionnaire.model.Option">
+    update `option`
+    set questionID = #{questionid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR}
+    where optionID = #{optionid,jdbcType=INTEGER}
+  </update>
+</mapper>

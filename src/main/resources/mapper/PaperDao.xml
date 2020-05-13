@@ -8,11 +8,10 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="mode" jdbcType="TINYINT" property="mode" />
     <result column="fillNumber" jdbcType="INTEGER" property="fillnumber" />
-    <result column="start" jdbcType="TIMESTAMP" property="start" />
-    <result column="end" jdbcType="TIMESTAMP" property="end" />
+    <result column="open" jdbcType="BOOLEAN" property="open" />
   </resultMap>
   <sql id="Base_Column_List">
-    paperID, author, title, description, `mode`, fillNumber, `start`, `end`
+    paperID, author, title, description, `mode`, fillNumber, `open`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,12 +24,15 @@
     where paperID = #{paperid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="paperID" keyProperty="paperid" parameterType="com.ziffer.questionnaire.model.Paper" useGeneratedKeys="true">
+<!--    <selectKey resultType="java.lang.Integer" keyProperty="paperid" order="AFTER" >-->
+<!--      SELECT LAST_INSERT_ID()-->
+<!--    </selectKey>-->
     insert into paper (author, title, description, 
-      `mode`, fillNumber, `start`, 
-      `end`)
+      `mode`, fillNumber, `open`
+      )
     values (#{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{mode,jdbcType=TINYINT}, #{fillnumber,jdbcType=INTEGER}, #{start,jdbcType=TIMESTAMP}, 
-      #{end,jdbcType=TIMESTAMP})
+      #{mode,jdbcType=TINYINT}, #{fillnumber,jdbcType=INTEGER}, #{open,jdbcType=BOOLEAN}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="paperID" keyProperty="paperid" parameterType="com.ziffer.questionnaire.model.Paper" useGeneratedKeys="true">
     insert into paper
@@ -50,11 +52,8 @@
       <if test="fillnumber != null">
         fillNumber,
       </if>
-      <if test="start != null">
-        `start`,
-      </if>
-      <if test="end != null">
-        `end`,
+      <if test="open != null">
+        `open`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -73,11 +72,8 @@
       <if test="fillnumber != null">
         #{fillnumber,jdbcType=INTEGER},
       </if>
-      <if test="start != null">
-        #{start,jdbcType=TIMESTAMP},
-      </if>
-      <if test="end != null">
-        #{end,jdbcType=TIMESTAMP},
+      <if test="open != null">
+        #{open,jdbcType=BOOLEAN},
       </if>
     </trim>
   </insert>
@@ -99,11 +95,8 @@
       <if test="fillnumber != null">
         fillNumber = #{fillnumber,jdbcType=INTEGER},
       </if>
-      <if test="start != null">
-        `start` = #{start,jdbcType=TIMESTAMP},
-      </if>
-      <if test="end != null">
-        `end` = #{end,jdbcType=TIMESTAMP},
+      <if test="open != null">
+        `open` = #{open,jdbcType=BOOLEAN},
       </if>
     </set>
     where paperID = #{paperid,jdbcType=INTEGER}
@@ -115,8 +108,7 @@
       description = #{description,jdbcType=VARCHAR},
       `mode` = #{mode,jdbcType=TINYINT},
       fillNumber = #{fillnumber,jdbcType=INTEGER},
-      `start` = #{start,jdbcType=TIMESTAMP},
-      `end` = #{end,jdbcType=TIMESTAMP}
+      `open` = #{open,jdbcType=BOOLEAN}
     where paperID = #{paperid,jdbcType=INTEGER}
   </update>
 </mapper>

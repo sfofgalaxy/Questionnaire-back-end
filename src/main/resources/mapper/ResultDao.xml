@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziffer.questionnaire.mapper.ResultDao">
+  <resultMap id="BaseResultMap" type="com.ziffer.questionnaire.model.Result">
+    <id column="resultID" jdbcType="INTEGER" property="resultid" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="paperID" jdbcType="INTEGER" property="paperid" />
+    <result column="submitTime" jdbcType="TIMESTAMP" property="submittime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    resultID, email, ip, paperID, submitTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from result
+    where resultID = #{resultid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from result
+    where resultID = #{resultid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="resultID" keyProperty="resultid" parameterType="com.ziffer.questionnaire.model.Result" useGeneratedKeys="true">
+    insert into result (email, ip, paperID, 
+      submitTime)
+    values (#{email,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{paperid,jdbcType=INTEGER}, 
+      #{submittime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="resultID" keyProperty="resultid" parameterType="com.ziffer.questionnaire.model.Result" useGeneratedKeys="true">
+    insert into result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="email != null">
+        email,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="paperid != null">
+        paperID,
+      </if>
+      <if test="submittime != null">
+        submitTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="paperid != null">
+        #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="submittime != null">
+        #{submittime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ziffer.questionnaire.model.Result">
+    update result
+    <set>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="paperid != null">
+        paperID = #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="submittime != null">
+        submitTime = #{submittime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where resultID = #{resultid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ziffer.questionnaire.model.Result">
+    update result
+    set email = #{email,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      paperID = #{paperid,jdbcType=INTEGER},
+      submitTime = #{submittime,jdbcType=TIMESTAMP}
+    where resultID = #{resultid,jdbcType=INTEGER}
+  </update>
+</mapper>

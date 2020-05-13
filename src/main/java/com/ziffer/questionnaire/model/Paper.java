@@ -1,7 +1,6 @@
 package com.ziffer.questionnaire.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -25,9 +24,7 @@ public class Paper implements Serializable {
      */
     private Integer fillnumber;
 
-    private Date start;
-
-    private Date end;
+    private Boolean open;
 
     private static final long serialVersionUID = 1L;
 }
