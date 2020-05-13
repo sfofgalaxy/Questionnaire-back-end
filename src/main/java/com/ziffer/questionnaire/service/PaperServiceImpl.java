@@ -9,6 +9,8 @@ import com.ziffer.questionnaire.model.Question;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+
 @Service
 public class PaperServiceImpl implements PaperService {
     @Resource
@@ -33,5 +35,10 @@ public class PaperServiceImpl implements PaperService {
     public int insertOption(Option option) {
         optionDao.insert(option);
         return option.getOptionid();
+    }
+
+    @Override
+    public List<Paper> getMyPaper(String username) {
+        return paperDao.selectByAuthor(username);
     }
 }

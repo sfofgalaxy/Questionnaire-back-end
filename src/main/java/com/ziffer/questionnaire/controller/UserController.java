@@ -97,7 +97,7 @@ public class UserController {
         return message;
     }
 
-    @RequestMapping(value = "/modifypwd",method = RequestMethod.POST)
+    @RequestMapping(value = "/modifypwd",method = RequestMethod.PUT)
     @AuthToken
     public GeneralMessage modifypwd(@RequestParam("username") String username,
                                     @RequestParam("password") String password){

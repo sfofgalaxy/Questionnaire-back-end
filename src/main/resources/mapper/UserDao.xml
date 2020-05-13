@@ -15,11 +15,7 @@
     from user
     where email = #{email,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-  </select>
+
   <select id="selectByUsername" resultType="com.ziffer.questionnaire.model.User">
     select
     <include refid="Base_Column_List"/>

@@ -9,6 +9,7 @@ import com.ziffer.questionnaire.model.Question;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,34 +23,6 @@ public class PaperController {
     public GeneralMessage postPaper(Paper paper,
                                     @RequestParam("question") List<String> questionList,
                                     @RequestParam("option") List<String> optionList){
-        GeneralMessage message = new GeneralMessage();
-        Option option = new Option();
-        Question question = new Question();
-        int paperID = paperServiceImpl.post(paper),questionStartID=0;;
-        int questionNum = questionList.size()/2,optionNum=optionList.size()/2;
-        for(int i=0;i<questionNum;i++){
-            question.setPaperid(paperID);
-            //注意parentID这里，第一个question不能设置级联
-            int parentID = Integer.parseInt(questionList.get(i*2));
-            if(parentID==0) question.setParentid(0);
-            else question.setParentid(questionStartID+paperID-1);
-            question.setType((byte)Integer.parseInt(questionList.get(i*2+1)));
-            if(i==0)questionStartID = paperServiceImpl.insertQuestion(question);
-
-        }
-        for(int i=0;i<optionNum;i++){
-            option.setQuestionid(questionStartID+Integer.parseInt(optionList.get(2*i))-1);
-            option.setContent(optionList.get(i*2+1));
-            paperServiceImpl.insertOption(option);
-        }
-        message.setState(true);
-        message.setMessage("发布成功");
-        return message;
-    }
-    @RequestMapping(value = "/test",method = RequestMethod.POST)
-    public GeneralMessage test(Paper paper,
-                               @RequestParam("question") List<String> questionList,
-                               @RequestParam("option") List<String> optionList){
         GeneralMessage message = new GeneralMessage();
         Option option = new Option();
         Question question = new Question();
@@ -73,5 +46,19 @@ public class PaperController {
         message.setState(true);
         message.setMessage("发布成功");
         return message;
+    }
+
+    @RequestMapping(value = "/myquestionnaire",method = RequestMethod.GET)
+    public List<Paper> getMyQuestionnaire(@RequestParam("username") String username){
+        List<Paper> res = paperServiceImpl.getMyPaper(username);
+        System.out.println(res.get(0).getTitle());
+        return res;
+    }
+
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    public List<Paper> test(@RequestParam("username") String username){
+        List<Paper> res = paperServiceImpl.getMyPaper(username);
+        System.out.println(res.get(0).getTitle());
+        return res;
     }
 }
