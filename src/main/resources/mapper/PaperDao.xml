@@ -113,4 +113,11 @@
       `open` = #{open,jdbcType=BOOLEAN}
     where paperID = #{paperid,jdbcType=INTEGER}
   </update>
+  <update id="updateStateByPrimaryKey">
+    update paper
+    set `open` = #{state,jdbcType=BOOLEAN}
+    where paperID = #{paperid,jdbcType=INTEGER}
+  </update>
+
+
 </mapper>

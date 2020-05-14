@@ -7,6 +7,7 @@ import com.ziffer.questionnaire.model.User;
 import com.ziffer.questionnaire.service.UserServiceImpl;
 import com.ziffer.questionnaire.utils.EncrypteUtils;
 import com.ziffer.questionnaire.utils.RedisUtils;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class UserController {
     private EncrypteUtils encrypteUtils;
 
     //等价@PostMapping("/login")
+    @ApiOperation("登录")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public LoginMessage login(@RequestParam("username") String username,
                               @RequestParam("password") String password){
@@ -57,6 +59,7 @@ public class UserController {
         return message;
     }
 
+    @ApiOperation("注册")
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public LoginMessage register(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
@@ -97,6 +100,7 @@ public class UserController {
         return message;
     }
 
+    @ApiOperation("修改密码")
     @RequestMapping(value = "/modifypwd",method = RequestMethod.PUT)
     @AuthToken
     public GeneralMessage modifypwd(@RequestParam("username") String username,

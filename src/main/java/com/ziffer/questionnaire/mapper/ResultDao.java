@@ -2,6 +2,8 @@ package com.ziffer.questionnaire.mapper;
 
 import com.ziffer.questionnaire.model.Result;
 
+import java.util.List;
+
 public interface ResultDao {
     int deleteByPrimaryKey(Integer resultid);
 
@@ -14,4 +16,6 @@ public interface ResultDao {
     int updateByPrimaryKeySelective(Result record);
 
     int updateByPrimaryKey(Result record);
+
+    List<Result> selectByPaperid(Integer paperid);
 }

@@ -18,4 +18,7 @@ public interface PaperDao {
     int updateByPrimaryKey(Paper record);
 
     List<Paper> selectByAuthor(String username);
+
+    int updateStateByPrimaryKey(Integer paperid, boolean state);
+
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ziffer.questionnaire.mapper.AnswerDao">
+  <resultMap id="BaseResultMap" type="com.ziffer.questionnaire.model.Answer">
+    <id column="resultID" jdbcType="INTEGER" property="resultid" />
+    <id column="questionID" jdbcType="INTEGER" property="questionid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    resultID, questionID, content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.ziffer.questionnaire.model.AnswerKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from answer
+    where resultID = #{resultid,jdbcType=INTEGER}
+      and questionID = #{questionid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByResultid" resultType="com.ziffer.questionnaire.model.Answer">
+    select *
+    from answer
+    where resultID = #{resultid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ziffer.questionnaire.model.AnswerKey">
+    delete from answer
+    where resultID = #{resultid,jdbcType=INTEGER}
+      and questionID = #{questionid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ziffer.questionnaire.model.Answer">
+    insert into answer (resultID, questionID, content
+      )
+    values (#{resultid,jdbcType=INTEGER}, #{questionid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ziffer.questionnaire.model.Answer">
+    insert into answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="resultid != null">
+        resultID,
+      </if>
+      <if test="questionid != null">
+        questionID,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="resultid != null">
+        #{resultid,jdbcType=INTEGER},
+      </if>
+      <if test="questionid != null">
+        #{questionid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ziffer.questionnaire.model.Answer">
+    update answer
+    <set>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where resultID = #{resultid,jdbcType=INTEGER}
+      and questionID = #{questionid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ziffer.questionnaire.model.Answer">
+    update answer
+    set content = #{content,jdbcType=VARCHAR}
+    where resultID = #{resultid,jdbcType=INTEGER}
+      and questionID = #{questionid,jdbcType=INTEGER}
+  </update>
+</mapper>

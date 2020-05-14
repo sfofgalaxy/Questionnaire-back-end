@@ -6,9 +6,10 @@
     <result column="paperID" jdbcType="INTEGER" property="paperid" />
     <result column="parentID" jdbcType="INTEGER" property="parentid" />
     <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="parentOptionID" jdbcType="INTEGER" property="parentoptionid" />
   </resultMap>
   <sql id="Base_Column_List">
-    questionID, paperID, parentID, `type`
+    questionID, paperID, parentID, `type`, parentOptionID
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -16,15 +17,20 @@
     from question
     where questionID = #{questionid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPaperid" resultType="com.ziffer.questionnaire.model.Question">
+      select *
+      from question
+      where paperID = #{paperid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from question
     where questionID = #{questionid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="questionID" keyProperty="questionid" parameterType="com.ziffer.questionnaire.model.Question" useGeneratedKeys="true">
-    insert into question (paperID, parentID, `type`
-      )
-    values (#{paperid,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}
-      )
+    insert into question (paperID, parentID, `type`, 
+      parentOptionID)
+    values (#{paperid,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
+      #{parentoptionid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="questionID" keyProperty="questionid" parameterType="com.ziffer.questionnaire.model.Question" useGeneratedKeys="true">
     insert into question
@@ -38,6 +44,9 @@
       <if test="type != null">
         `type`,
       </if>
+      <if test="parentoptionid != null">
+        parentOptionID,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="paperid != null">
@@ -48,6 +57,9 @@
       </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
+      </if>
+      <if test="parentoptionid != null">
+        #{parentoptionid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -63,6 +75,9 @@
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
       </if>
+      <if test="parentoptionid != null">
+        parentOptionID = #{parentoptionid,jdbcType=INTEGER},
+      </if>
     </set>
     where questionID = #{questionid,jdbcType=INTEGER}
   </update>
@@ -70,7 +85,8 @@
     update question
     set paperID = #{paperid,jdbcType=INTEGER},
       parentID = #{parentid,jdbcType=INTEGER},
-      `type` = #{type,jdbcType=TINYINT}
+      `type` = #{type,jdbcType=TINYINT},
+      parentOptionID = #{parentoptionid,jdbcType=INTEGER}
     where questionID = #{questionid,jdbcType=INTEGER}
   </update>
 </mapper>

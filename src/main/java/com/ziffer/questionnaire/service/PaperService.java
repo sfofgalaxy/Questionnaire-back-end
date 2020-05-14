@@ -1,10 +1,9 @@
 package com.ziffer.questionnaire.service;
 
-import com.ziffer.questionnaire.model.Option;
-import com.ziffer.questionnaire.model.Paper;
-import com.ziffer.questionnaire.model.Question;
+import com.ziffer.questionnaire.model.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface PaperService {
@@ -12,4 +11,9 @@ public interface PaperService {
     int insertQuestion(Question question);
     int insertOption(Option option);
     List<Paper> getMyPaper(String username);
+    Paper getByPaperID(Integer paperID);
+    boolean openPaper(Integer paperID);
+    boolean closePaper(Integer paperID);
+    Map<Result, List<Answer> > getResult(Integer paperID);
+    Map<Question, List<Option>> getQuestion(Integer paperid);
 }

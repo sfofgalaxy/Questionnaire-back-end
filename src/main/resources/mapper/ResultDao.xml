@@ -17,7 +17,12 @@
     from result
     where resultID = #{resultid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPaperid" resultType="com.ziffer.questionnaire.model.Result">
+      select *
+      from result
+      where paper = #{paperid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from result
     where resultID = #{resultid,jdbcType=INTEGER}
   </delete>

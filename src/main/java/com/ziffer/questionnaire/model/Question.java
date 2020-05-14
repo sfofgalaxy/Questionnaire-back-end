@@ -17,5 +17,7 @@ public class Question implements Serializable {
 
     private Byte type;
 
+    private Integer parentoptionid;
+
     private static final long serialVersionUID = 1L;
 }
