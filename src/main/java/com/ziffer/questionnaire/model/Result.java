@@ -12,7 +12,7 @@ import lombok.Data;
 public class Result implements Serializable {
     private Integer resultid;
 
-    private String email;
+    private String username;
 
     private String ip;
 

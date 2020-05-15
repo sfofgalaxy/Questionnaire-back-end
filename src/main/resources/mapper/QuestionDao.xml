@@ -7,9 +7,10 @@
     <result column="parentID" jdbcType="INTEGER" property="parentid" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="parentOptionID" jdbcType="INTEGER" property="parentoptionid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
-    questionID, paperID, parentID, `type`, parentOptionID
+    questionID, paperID, parentID, `type`, parentOptionID, content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -17,20 +18,20 @@
     from question
     where questionID = #{questionid,jdbcType=INTEGER}
   </select>
-    <select id="selectByPaperid" resultType="com.ziffer.questionnaire.model.Question">
-      select *
-      from question
-      where paperID = #{paperid,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectByPaperid" resultType="com.ziffer.questionnaire.model.Question">
+    select *
+    from question
+    where paperID = #{paperid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from question
     where questionID = #{questionid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="questionID" keyProperty="questionid" parameterType="com.ziffer.questionnaire.model.Question" useGeneratedKeys="true">
     insert into question (paperID, parentID, `type`, 
-      parentOptionID)
+      parentOptionID, content)
     values (#{paperid,jdbcType=INTEGER}, #{parentid,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
-      #{parentoptionid,jdbcType=INTEGER})
+      #{parentoptionid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="questionID" keyProperty="questionid" parameterType="com.ziffer.questionnaire.model.Question" useGeneratedKeys="true">
     insert into question
@@ -47,6 +48,9 @@
       <if test="parentoptionid != null">
         parentOptionID,
       </if>
+      <if test="content != null">
+        content,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="paperid != null">
@@ -60,6 +64,9 @@
       </if>
       <if test="parentoptionid != null">
         #{parentoptionid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -78,6 +85,9 @@
       <if test="parentoptionid != null">
         parentOptionID = #{parentoptionid,jdbcType=INTEGER},
       </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
     </set>
     where questionID = #{questionid,jdbcType=INTEGER}
   </update>
@@ -86,7 +96,8 @@
     set paperID = #{paperid,jdbcType=INTEGER},
       parentID = #{parentid,jdbcType=INTEGER},
       `type` = #{type,jdbcType=TINYINT},
-      parentOptionID = #{parentoptionid,jdbcType=INTEGER}
+      parentOptionID = #{parentoptionid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR}
     where questionID = #{questionid,jdbcType=INTEGER}
   </update>
 </mapper>

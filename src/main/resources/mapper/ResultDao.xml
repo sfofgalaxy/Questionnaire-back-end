@@ -3,13 +3,13 @@
 <mapper namespace="com.ziffer.questionnaire.mapper.ResultDao">
   <resultMap id="BaseResultMap" type="com.ziffer.questionnaire.model.Result">
     <id column="resultID" jdbcType="INTEGER" property="resultid" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="ip" jdbcType="VARCHAR" property="ip" />
     <result column="paperID" jdbcType="INTEGER" property="paperid" />
     <result column="submitTime" jdbcType="TIMESTAMP" property="submittime" />
   </resultMap>
   <sql id="Base_Column_List">
-    resultID, email, ip, paperID, submitTime
+    resultID, username, ip, paperID, submitTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -27,16 +27,16 @@
     where resultID = #{resultid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="resultID" keyProperty="resultid" parameterType="com.ziffer.questionnaire.model.Result" useGeneratedKeys="true">
-    insert into result (email, ip, paperID, 
+    insert into result (username, ip, paperID,
       submitTime)
-    values (#{email,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{paperid,jdbcType=INTEGER}, 
-      #{submittime,jdbcType=TIMESTAMP})
+    values (#{username,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{paperid,jdbcType=INTEGER},
+      now())
   </insert>
   <insert id="insertSelective" keyColumn="resultID" keyProperty="resultid" parameterType="com.ziffer.questionnaire.model.Result" useGeneratedKeys="true">
     insert into result
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="email != null">
-        email,
+      <if test="username != null">
+        username,
       </if>
       <if test="ip != null">
         ip,
@@ -49,8 +49,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="ip != null">
         #{ip,jdbcType=VARCHAR},
@@ -66,8 +66,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ziffer.questionnaire.model.Result">
     update result
     <set>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
       </if>
       <if test="ip != null">
         ip = #{ip,jdbcType=VARCHAR},
@@ -83,7 +83,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ziffer.questionnaire.model.Result">
     update result
-    set email = #{email,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
       ip = #{ip,jdbcType=VARCHAR},
       paperID = #{paperid,jdbcType=INTEGER},
       submitTime = #{submittime,jdbcType=TIMESTAMP}

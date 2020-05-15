@@ -84,4 +84,40 @@ public class PaperServiceImpl implements PaperService {
         }
         return  questionListMap;
     }
+
+    @Override
+    public List<Question> getQuestionWithoutOption(Integer paperid) {
+        return questionDao.selectByPaperid(paperid);
+    }
+
+    @Override
+    public void answer(Integer paperid, List<String> answerList, String ip, String username) {
+        //一组数[num,content]分别对应questionID.content
+        int answerNum = answerList.size()/2;
+        //先创建存入数据库中result的对象
+        Result result = new Result();
+        result.setIp(ip);
+        result.setUsername(username);
+        result.setPaperid(paperid);
+        resultDao.insert(result);
+        int resultID = result.getResultid();
+        //获取到resultID之后，开始插入本次结果对应的回答
+        for(int i=0;i<answerNum;i++){
+            Answer answer = new Answer();
+            answer.setResultid(resultID);
+            answer.setQuestionid(Integer.parseInt(answerList.get(2*i)));
+            answer.setContent(answerList.get(2*i+1));
+            answerDao.insert(answer);
+        }
+    }
+    /*unfinished*/
+    @Override
+    public int getFillNum(Integer paperid, String ip) {
+        return 0;
+    }
+
+    @Override
+    public int getFillNumToday(Integer paperid, String ip) {
+        return 0;
+    }
 }

@@ -72,7 +72,7 @@ public class PaperController {
         message.setState(paper.getOpen());
         if(message.isState()){
             //再查看模式
-            int mode = paper.getMode();
+            byte mode = paper.getMode();
             //仅限注册用户
             if(mode==0){
                 //获取题目
@@ -120,6 +120,4 @@ public class PaperController {
         }
         return message;
     }
-
-
 }

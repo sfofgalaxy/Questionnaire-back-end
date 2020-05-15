@@ -16,4 +16,8 @@ public interface PaperService {
     boolean closePaper(Integer paperID);
     Map<Result, List<Answer> > getResult(Integer paperID);
     Map<Question, List<Option>> getQuestion(Integer paperid);
+    List<Question> getQuestionWithoutOption(Integer paperid);
+    void answer(Integer paperid, List<String> answerList, String ip, String username);
+    int getFillNum(Integer paperid, String ip);
+    int getFillNumToday(Integer paperid, String ip);
 }

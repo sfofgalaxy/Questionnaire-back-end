@@ -19,5 +19,7 @@ public class Question implements Serializable {
 
     private Integer parentoptionid;
 
+    private String content;
+
     private static final long serialVersionUID = 1L;
 }
