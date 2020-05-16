@@ -110,7 +110,6 @@ public class PaperServiceImpl implements PaperService {
             answerDao.insert(answer);
         }
     }
-    /*unfinished*/
     @Override
     public int getFillNum(Integer paperid, String ip) {
         return resultDao.selectResultNumByIP(paperid,ip);
