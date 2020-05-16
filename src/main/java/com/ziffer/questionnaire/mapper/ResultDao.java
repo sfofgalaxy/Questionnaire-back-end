@@ -18,4 +18,8 @@ public interface ResultDao {
     int updateByPrimaryKey(Result record);
 
     List<Result> selectByPaperid(Integer paperid);
+
+    int selectResultNumByIP(Integer paperid, String ip);
+
+    int selectResultNumTodayByIP(Integer paperid, String ip);
 }

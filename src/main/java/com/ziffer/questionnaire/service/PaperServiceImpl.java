@@ -113,11 +113,11 @@ public class PaperServiceImpl implements PaperService {
     /*unfinished*/
     @Override
     public int getFillNum(Integer paperid, String ip) {
-        return 0;
+        return resultDao.selectResultNumByIP(paperid,ip);
     }
 
     @Override
     public int getFillNumToday(Integer paperid, String ip) {
-        return 0;
+        return resultDao.selectResultNumTodayByIP(paperid,ip);
     }
 }

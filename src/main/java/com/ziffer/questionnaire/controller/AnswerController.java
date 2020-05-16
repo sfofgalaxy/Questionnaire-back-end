@@ -94,12 +94,4 @@ public class AnswerController {
 
         return message;
     }
-
-    @ApiOperation("用于测试数据传输格式的接口")
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    public String test(@RequestParam("username") String username){
-        User res = userServiceImpl.getByUsername(username);
-        System.out.println(res);
-        return "测试结束";
-    }
 }
