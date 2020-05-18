@@ -120,4 +120,19 @@ public class PaperController {
         }
         return message;
     }
+
+    @ApiOperation("删除问卷")
+    @RequestMapping(value = "/delete/{paperid}",method = RequestMethod.DELETE)
+    @AuthToken
+    public GeneralMessage postPaper(@PathVariable("paperid") Integer paperid){
+        GeneralMessage message = new GeneralMessage();
+        if(paperServiceImpl.deletePaper(paperid)){
+            message.setState(true);
+            message.setMessage("删除成功");
+        }else{
+            message.setState(false);
+            message.setMessage("删除失败，请重试");
+        }
+        return message;
+    }
 }

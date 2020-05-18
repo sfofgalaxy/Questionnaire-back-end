@@ -60,6 +60,9 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
+    public boolean deletePaper(Integer paperid) { return paperDao.deleteByPrimaryKey(paperid)>0; }
+
+    @Override
     public Map<Result, List<Answer>> getResult(Integer paperid) {
         Map<Result, List<Answer>> resultListMap = new HashMap<>();
         List<Result> results = resultDao.selectByPaperid(paperid);

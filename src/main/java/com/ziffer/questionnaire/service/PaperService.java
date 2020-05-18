@@ -14,6 +14,7 @@ public interface PaperService {
     Paper getByPaperID(Integer paperID);
     boolean openPaper(Integer paperID);
     boolean closePaper(Integer paperID);
+    boolean deletePaper(Integer paperid);
     Map<Result, List<Answer> > getResult(Integer paperID);
     Map<Question, List<Option>> getQuestion(Integer paperid);
     List<Question> getQuestionWithoutOption(Integer paperid);
