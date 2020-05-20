@@ -115,7 +115,7 @@ public class PaperController {
     @ApiOperation("删除问卷")
     @RequestMapping(value = "/delete/{paperid}",method = RequestMethod.DELETE)
     @AuthToken
-    public GeneralMessage postPaper(@PathVariable("paperid") Integer paperid){
+    public GeneralMessage deletePaper(@PathVariable("paperid") Integer paperid){
         GeneralMessage message = new GeneralMessage();
         if(paperServiceImpl.deletePaper(paperid)){
             message.setState(true);
