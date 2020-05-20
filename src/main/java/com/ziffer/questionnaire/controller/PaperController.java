@@ -29,20 +29,11 @@ public class PaperController {
         Option option = new Option();
         Question question = new Question();
         int paperID = paperServiceImpl.post(paper), questionStartID=0;;
-        int questionNum = questionList.size()/3,optionNum=optionList.size()/2;
+        int questionNum = questionList.size()/2,optionNum=optionList.size()/2;
         for(int i=0;i<questionNum;i++){
             question.setPaperid(paperID);
-            //注意parentID这里，第一个question不能设置级联
-            int parentID = Integer.parseInt(questionList.get(i*3));
-            if(parentID==0) {
-                question.setParentid(0);
-                question.setParentoptionid(0);
-            }
-            else {
-                question.setParentid(questionStartID+paperID-1);
-                question.setParentoptionid(Integer.parseInt(questionList.get(i*3+1)));
-            }
-            question.setType((byte)Integer.parseInt(questionList.get(i*3+2)));
+            question.setContent(questionList.get(i*2));
+            question.setType((byte)Integer.parseInt(questionList.get(i*2+1)));
             if(i==0)questionStartID = paperServiceImpl.insertQuestion(question);
             else paperServiceImpl.insertQuestion(question);
         }

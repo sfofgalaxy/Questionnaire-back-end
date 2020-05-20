@@ -13,11 +13,7 @@ public class Question implements Serializable {
 
     private Integer paperid;
 
-    private Integer parentid;
-
     private Byte type;
-
-    private Integer parentoptionid;
 
     private String content;
 
