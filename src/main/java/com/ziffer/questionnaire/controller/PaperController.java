@@ -43,7 +43,7 @@ public class PaperController {
             paperServiceImpl.insertOption(option);
         }
         message.setState(true);
-        message.setMessage("发布成功");
+        message.setMessage(""+paperID);
         return message;
     }
 
@@ -54,9 +54,9 @@ public class PaperController {
         return paperServiceImpl.getMyPaper(username);
     }
 
+    @ApiOperation("查看问卷")
     @RequestMapping(value = "/{paperid}",method = RequestMethod.GET)
-    public PaperMessage checkPaper(@PathVariable("paperid") Integer paperid,
-                                   @RequestParam("username") String username){
+    public PaperMessage checkPaper(@PathVariable("paperid") Integer paperid){
         Paper paper = paperServiceImpl.getByPaperID(paperid);
         PaperMessage message = new PaperMessage();
         //先查看是否开

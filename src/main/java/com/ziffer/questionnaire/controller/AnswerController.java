@@ -42,7 +42,6 @@ public class AnswerController {
         return message;
     }
 
-    /*unfinished*/
     @ApiOperation("回答问卷")
     @RequestMapping(value = "/answer/{paperid}",method = RequestMethod.POST)
     public GeneralMessage answer(@PathVariable("paperid") Integer paperid,
