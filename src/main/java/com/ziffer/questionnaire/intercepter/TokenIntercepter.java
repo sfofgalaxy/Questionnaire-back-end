@@ -65,7 +65,6 @@ public class TokenIntercepter implements HandlerInterceptor {
                 writer.print(error);
                 return false;
             }
-            return true;
         }
         return true;
     }
