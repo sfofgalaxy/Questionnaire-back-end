@@ -69,7 +69,9 @@ public class PaperController {
                 //获取题目
                 Map<Question, List<Option>> questionListMap;
                 questionListMap = paperServiceImpl.getQuestion(paperid);
-                message.setMessage("问卷获取成功");
+                message.setMessage("获取问卷成功");
+                message.setTitle(paper.getTitle());
+                message.setDescription(paper.getDescription());
                 message.setQuestion(questionListMap);
             }
             //无需注册，可以填写n次或者每天填写n次

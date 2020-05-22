@@ -11,5 +11,7 @@ import java.util.Map;
 public class PaperMessage {
     private boolean state;
     private String message;
+    private String title;
+    private String description;
     Map<Question, List<Option>> question;
 }
