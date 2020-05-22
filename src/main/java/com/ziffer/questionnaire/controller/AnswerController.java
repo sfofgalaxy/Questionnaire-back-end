@@ -6,9 +6,7 @@ import com.ziffer.questionnaire.intercepter.AuthToken;
 import com.ziffer.questionnaire.model.*;
 import com.ziffer.questionnaire.service.PaperServiceImpl;
 import com.ziffer.questionnaire.service.UserServiceImpl;
-import com.ziffer.questionnaire.utils.IpUtils;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,8 +20,6 @@ public class AnswerController {
     PaperServiceImpl paperServiceImpl;
     @Resource
     UserServiceImpl userServiceImpl;
-    @Autowired
-    private IpUtils ipUtils;
 
     @ApiOperation("获取问卷的结果")
     @RequestMapping(value = "/result/{paperid}",method = RequestMethod.GET)
@@ -52,12 +48,12 @@ public class AnswerController {
     public GeneralMessage answer(HttpServletRequest request,
                                  @PathVariable("paperid") Integer paperid,
                                  @RequestParam("answer") List<String> answerList,
+                                 @RequestParam("ip") String ip,
                                  //如果无需注册则username设为""
                                  @RequestParam("username")String username){
         GeneralMessage message = new GeneralMessage();
         //先获取paper并查询paper模式
         Paper paper = paperServiceImpl.getByPaperID(paperid);
-        String ip = ipUtils.getIpAddr(request);
         byte mode = paper.getMode();
         //判断是否可以回答问卷
         if(mode==0){
