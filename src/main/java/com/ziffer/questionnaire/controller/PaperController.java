@@ -59,6 +59,7 @@ public class PaperController {
     @ApiOperation("查看问卷")
     @RequestMapping(value = "/{paperid}",method = RequestMethod.GET)
     public PaperMessage checkPaper(@PathVariable("paperid") Integer paperid,
+                                   //如果没有登录username就为""
                                    @RequestParam("username") String username){
         Paper paper = paperServiceImpl.getByPaperID(paperid);
         PaperMessage message = new PaperMessage();
