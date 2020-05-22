@@ -5,6 +5,7 @@ import com.ziffer.questionnaire.dto.PaperMessage;
 import com.ziffer.questionnaire.intercepter.AuthToken;
 import com.ziffer.questionnaire.model.*;
 import com.ziffer.questionnaire.service.PaperServiceImpl;
+import com.ziffer.questionnaire.service.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ import java.util.Map;
 public class PaperController {
     @Resource
     private PaperServiceImpl paperServiceImpl;
+    @Resource
+    private UserServiceImpl userServiceImpl;
 
     @ApiOperation("发布问卷")
     @RequestMapping(value = "/post",method = RequestMethod.POST)
@@ -55,7 +58,8 @@ public class PaperController {
 
     @ApiOperation("查看问卷")
     @RequestMapping(value = "/{paperid}",method = RequestMethod.GET)
-    public PaperMessage checkPaper(@PathVariable("paperid") Integer paperid){
+    public PaperMessage checkPaper(@PathVariable("paperid") Integer paperid,
+                                   @RequestParam("username") String username){
         Paper paper = paperServiceImpl.getByPaperID(paperid);
         PaperMessage message = new PaperMessage();
         //先查看是否开
@@ -63,8 +67,20 @@ public class PaperController {
         if(message.isState()){
             //再查看模式
             byte mode = paper.getMode();
-            //仅限注册用户
-            if(mode==0){
+            boolean flag =false;//判断是否可以获取题目
+            //无需注册，可以填写n次或者每天填写n次
+            if(mode==1||mode==2){
+                flag=true;
+            }
+            //仅限登录用户
+            else{
+                if(userServiceImpl.getByUsername(username)==null) {
+                    message.setState(false);
+                    message.setMessage("请登录后作答");
+                }
+                else flag=true;
+            }
+            if(flag){
                 //获取题目
                 Map<Question, List<Option>> questionListMap;
                 questionListMap = paperServiceImpl.getQuestion(paperid);
@@ -72,10 +88,6 @@ public class PaperController {
                 message.setTitle(paper.getTitle());
                 message.setDescription(paper.getDescription());
                 message.setQuestion(questionListMap);
-            }
-            //无需注册，可以填写n次或者每天填写n次
-            else{
-                message.setMessage("请登陆后作答");
             }
         }else{
             message.setMessage("问卷已关闭");
